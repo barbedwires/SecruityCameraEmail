@@ -1,6 +1,19 @@
 import time
+import smtplib
+import ssl 
 import cv2 
 import datetime as dt 
+from email.message import EmailMessage
+
+
+subject = "Sec Camera Detected Movement!"
+text = "This email was sent to you to notify you there was movement detected on your camera!"
+your_email = "your email"
+receiving_email = "the email receiving the email"
+app_password = "your app password"
+port = 587 
+
+
 
 
 capture = cv2.VideoCapture(0)
@@ -32,6 +45,18 @@ while True:
             current_time = dt.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
             videoOutput = cv2.VideoWriter(f"{current_time}.mp4", cc, 20, frame_size)
             print("Recording has begun")
+            msg = EmailMessage()
+            msg["From"] = your_email
+            msg["To"] = receiving_email 
+            msg["Subject"] = subject
+            msg.set_content(text)
+            context = ssl.create_default_context()
+            with smtplib.SMTP("smtp.gmail.com", port) as server:
+                server.starttls(context=context)
+                server.login(your_email, app_password)
+                server.sendmail(your_email, receiving_email, msg.as_string())
+                print("Email has been sent!")
+
     elif recongnized:
         if timer:
             if time.time() - recongnition_stopped_time >= RECORD_AFTER_RECONGNITION:
