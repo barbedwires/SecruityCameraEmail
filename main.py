@@ -6,6 +6,7 @@ import datetime as dt
 from email.message import EmailMessage
 
 
+# email info
 subject = "Sec Camera Detected Movement!"
 text = "This email was sent to you to notify you there was movement detected on your camera!"
 your_email = "your email"
@@ -15,7 +16,7 @@ port = 587
 
 
 
-
+# camera info
 capture = cv2.VideoCapture(0)
 
 face_rec = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
